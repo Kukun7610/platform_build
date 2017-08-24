@@ -372,7 +372,7 @@ function chooseproduct()
     if [ "x$TARGET_PRODUCT" != x ] ; then
         default_value=$TARGET_PRODUCT
     else
-        default_value=dosp_arm
+        default_value=aosp_arm
     fi
     export TARGET_BUILD_APPS=
     export TARGET_PRODUCT=
@@ -500,13 +500,13 @@ function lunch()
         answer=$1
     else
         print_lunch_menu
-        echo -n "Which would you like? [dosp_arm-eng] "
+        echo -n "Which would you like? [aosp_arm-eng] "
         read answer
     fi
     local selection=
     if [ -z "$answer" ]
     then
-        selection=dosp_arm-eng
+        selection=aosp_arm-eng
     elif (echo -n $answer | grep -q -e "^[0-9][0-9]*$")
     then
         if [ $answer -le ${#LUNCH_MENU_CHOICES[@]} ]
@@ -600,14 +600,14 @@ function tapas()
         echo "tapas: Error: Multiple densities supplied: $density"
         return
     fi
-    local product=dosp_arm
+    local product=aosp_arm
     case $arch in
-      x86)    product=dosp_x86;;
-      mips)   product=dosp_mips;;
+      x86)    product=aosp_x86;;
+      mips)   product=aosp_mips;;
       armv5)  product=generic_armv5;;
-      arm64)  product=dosp_arm64;;
-      x86_64) product=dosp_x86_64;;
-      mips64)  product=dosp_mips64;;
+      arm64)  product=aosp_arm64;;
+      x86_64) product=aosp_x86_64;;
+      mips64)  product=aosp_mips64;;
     esac
     if [ -z "$variant" ]; then
         variant=eng
