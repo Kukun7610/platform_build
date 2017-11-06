@@ -24,7 +24,7 @@ Invoke ". build/envsetup.sh" from your shell to add the following functions to y
 
 EOF
 
-    __print_aosp_functions_help
+    __print_dosp_functions_help
 
 cat <<EOF
 
@@ -38,7 +38,7 @@ EOF
     local T=$(gettop)
     local A=""
     local i
-    for i in `cat $T/build/envsetup.sh $T/vendor/aosp/build/envsetup.sh | sed -n "/^[[:blank:]]*function /s/function \([a-z_]*\).*/\1/p" | sort | uniq`; do
+    for i in `cat $T/build/envsetup.sh $T/vendor/dosp/build/envsetup.sh | sed -n "/^[[:blank:]]*function /s/function \([a-z_]*\).*/\1/p" | sort | uniq`; do
       A="$A $i"
     done
     echo $A
@@ -49,8 +49,8 @@ function build_build_var_cache()
 {
     local T=$(gettop)
     # Grep out the variable names from the script.
-    cached_vars=`cat $T/build/envsetup.sh $T/vendor/aosp/build/envsetup.sh | tr '()' '  ' | awk '{for(i=1;i<=NF;i++) if($i~/get_build_var/) print $(i+1)}' | sort -u | tr '\n' ' '`
-    cached_abs_vars=`cat $T/build/envsetup.sh $T/vendor/aosp/build/envsetup.sh | tr '()' '  ' | awk '{for(i=1;i<=NF;i++) if($i~/get_abs_build_var/) print $(i+1)}' | sort -u | tr '\n' ' '`
+    cached_vars=`cat $T/build/envsetup.sh $T/vendor/dosp/build/envsetup.sh | tr '()' '  ' | awk '{for(i=1;i<=NF;i++) if($i~/get_build_var/) print $(i+1)}' | sort -u | tr '\n' ' '`
+    cached_abs_vars=`cat $T/build/envsetup.sh $T/vendor/dosp/build/envsetup.sh | tr '()' '  ' | awk '{for(i=1;i<=NF;i++) if($i~/get_abs_build_var/) print $(i+1)}' | sort -u | tr '\n' ' '`
     # Call the build system to dump the "<val>=<value>" pairs as a shell script.
     build_dicts_script=`\cd $T; CALLED_FROM_SETUP=true BUILD_SYSTEM=build/core \
                         command make --no-print-directory -f build/core/config.mk \
@@ -136,8 +136,8 @@ function check_product()
         echo "Couldn't locate the top of the tree.  Try setting TOP." >&2
         return
     fi
-    if (echo -n $1 | grep -q -e "^aosp_") ; then
-        CUSTOM_BUILD=$(echo -n $1 | sed -e 's/^aosp_//g')
+    if (echo -n $1 | grep -q -e "^dosp_") ; then
+        CUSTOM_BUILD=$(echo -n $1 | sed -e 's/^dosp_//g')
         export BUILD_NUMBER=$( (date +%s%N ; echo $CUSTOM_BUILD; hostname) | openssl sha1 | sed -e 's/.*=//g; s/ //g' | cut -c1-10 )
     else
         CUSTOM_BUILD=
@@ -422,7 +422,7 @@ function chooseproduct()
     if [ "x$TARGET_PRODUCT" != x ] ; then
         default_value=$TARGET_PRODUCT
     else
-        default_value=aosp_arm
+        default_value=dosp_arm
     fi
 
     export TARGET_BUILD_APPS=
@@ -582,7 +582,7 @@ function lunch()
         print_lunch_menu
         tput setaf 2;
         tput bold;
-        echo -n "Go ahead and pick a number or enter lunch combo(aosp_device-userdebug)... "
+        echo -n "Go ahead and pick a number or enter lunch combo(dosp_device-userdebug)... "
         tput sgr0;
         read answer
     fi
@@ -591,7 +591,7 @@ function lunch()
 
     if [ -z "$answer" ]
     then
-        selection=aosp_arm-eng
+        selection=dosp_arm-eng
     elif (echo -n $answer | grep -q -e "^[0-9][0-9]*$")
     then
         if [ $answer -le ${#LUNCH_MENU_CHOICES[@]} ]
@@ -694,14 +694,14 @@ function tapas()
         return
     fi
 
-    local product=aosp_arm
+    local product=dosp_arm
     case $arch in
-      x86)    product=aosp_x86;;
-      mips)   product=aosp_mips;;
+      x86)    product=dosp_x86;;
+      mips)   product=dosp_mips;;
       armv5)  product=generic_armv5;;
-      arm64)  product=aosp_arm64;;
-      x86_64) product=aosp_x86_64;;
-      mips64)  product=aosp_mips64;;
+      arm64)  product=dosp_arm64;;
+      x86_64) product=dosp_x86_64;;
+      mips64)  product=dosp_mips64;;
     esac
     if [ -z "$variant" ]; then
         variant=eng
@@ -1720,4 +1720,4 @@ addcompletions
 
 export ANDROID_BUILD_TOP=$(gettop)
 
-. $ANDROID_BUILD_TOP/vendor/aosp/build/envsetup.sh
+. $ANDROID_BUILD_TOP/vendor/dosp/build/envsetup.sh
