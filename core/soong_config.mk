@@ -16,8 +16,8 @@ endif
 # Create soong.variables with copies of makefile settings.  Runs every build,
 # but only updates soong.variables if it changes
 SOONG_VARIABLES_TMP := $(shell mktemp -u)
-include vendor/aosp/build/soong/soong_config.mk
-$(SOONG_VARIABLES): FORCE aosp_soong
+include vendor/dosp/build/soong/soong_config.mk
+$(SOONG_VARIABLES): FORCE dosp_soong
 	$(hide) (\
 	echo '    "Make_suffix": "-$(TARGET_PRODUCT)",'; \
 	echo ''; \
