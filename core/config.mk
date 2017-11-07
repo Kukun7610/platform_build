@@ -192,7 +192,7 @@ FIND_LEAVES_EXCLUDES := $(addprefix --prune=, $(SCAN_EXCLUDE_DIRS) .repo .git)
 $(call project-set-path-variant,recovery,RECOVERY_VARIANT,bootable/recovery)
 
 -include vendor/extra/BoardConfigExtra.mk
--include vendor/aosp/config/BoardConfigLineage.mk
+-include vendor/dosp/config/BoardConfigLineage.mk
 
 # The build system exposes several variables for where to find the kernel
 # headers:
@@ -460,9 +460,9 @@ ifndef PDK_FUSION_PLATFORM_ZIP
 # with vendor/pdk/TARGET_PRODUCT.
 _pdk_fusion_default_platform_zip = $(strip \
   $(wildcard vendor/pdk/$(TARGET_DEVICE)/$(TARGET_PRODUCT)-$(TARGET_BUILD_VARIANT)/platform/platform.zip) \
-  $(wildcard vendor/pdk/$(TARGET_DEVICE)/$(patsubst aosp_%,full_%,$(TARGET_PRODUCT))-$(TARGET_BUILD_VARIANT)/platform/platform.zip) \
+  $(wildcard vendor/pdk/$(TARGET_DEVICE)/$(patsubst dosp_%,full_%,$(TARGET_PRODUCT))-$(TARGET_BUILD_VARIANT)/platform/platform.zip) \
   $(wildcard vendor/pdk/$(TARGET_PRODUCT)/$(TARGET_PRODUCT)-$(TARGET_BUILD_VARIANT)/platform/platform.zip) \
-  $(wildcard vendor/pdk/$(TARGET_PRODUCT)/$(patsubst aosp_%,full_%,$(TARGET_PRODUCT))-$(TARGET_BUILD_VARIANT)/platform/platform.zip))
+  $(wildcard vendor/pdk/$(TARGET_PRODUCT)/$(patsubst dosp_%,full_%,$(TARGET_PRODUCT))-$(TARGET_BUILD_VARIANT)/platform/platform.zip))
 ifneq (,$(_pdk_fusion_default_platform_zip))
 PDK_FUSION_PLATFORM_ZIP := $(word 1, $(_pdk_fusion_default_platform_zip))
 TARGET_BUILD_PDK := true
@@ -896,7 +896,7 @@ endif
 ifneq ($(CUSTOM_BUILD),)
 ## We need to be sure the global selinux policies are included
 ## last, to avoid accidental resetting by device configs
-$(eval include device/aosp/sepolicy/common/sepolicy.mk)
+$(eval include device/dosp/sepolicy/common/sepolicy.mk)
 
 # Include any vendor specific config.mk file
 -include $(TOPDIR)vendor/*/build/core/config.mk
@@ -905,14 +905,14 @@ $(eval include device/aosp/sepolicy/common/sepolicy.mk)
 -include $(TOPDIR)vendor/*/build/core/apicheck.mk
 
 # Rules for QCOM targets
--include $(TOPDIR)vendor/aosp/build/core/qcom_target.mk
+-include $(TOPDIR)vendor/dosp/build/core/qcom_target.mk
 
 # Rules for MTK targets
--include $(TOPDIR)vendor/aosp/build/core/mtk_target.mk
+-include $(TOPDIR)vendor/dosp/build/core/mtk_target.mk
 
 ## We need to be sure the global selinux policies are included
 ## last, to avoid accidental resetting by device configs
-$(eval include device/aosp/sepolicy/common/sepolicy.mk)
+$(eval include device/dosp/sepolicy/common/sepolicy.mk)
 endif
 
 include $(BUILD_SYSTEM)/dumpvar.mk
