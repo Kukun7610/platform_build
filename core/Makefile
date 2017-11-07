@@ -271,7 +271,7 @@ endif
 	$(hide) TARGET_BUILD_TYPE="$(TARGET_BUILD_VARIANT)" \
 			TARGET_BUILD_FLAVOR="$(TARGET_BUILD_FLAVOR)" \
 			TARGET_DEVICE="$(TARGET_DEVICE)" \
-			AOSP_DEVICE="$(TARGET_DEVICE)" \
+			DOSP_DEVICE="$(TARGET_DEVICE)" \
 			PRODUCT_NAME="$(TARGET_PRODUCT)" \
 			PRODUCT_BRAND="$(PRODUCT_BRAND)" \
 			PRODUCT_DEFAULT_LOCALE="$(call get-default-product-locale,$(PRODUCT_LOCALES))" \
@@ -1245,8 +1245,8 @@ endef
 RECOVERYIMAGE_ID_FILE := $(PRODUCT_OUT)/recovery.id
 # $(1): output file
 define build-recoveryimage-target
-  $(hide) ./vendor/aosp/tools/changelog
-  $(hide) mv $(PRODUCT_OUT)/Changelog.txt $(PRODUCT_OUT)/AospExtended-$(EXTENDED_VERSION)-$(shell date -u +%Y%m%d-%H%M)-Changelog.txt
+  $(hide) ./vendor/dosp/tools/changelog
+  $(hide) mv $(PRODUCT_OUT)/Changelog.txt $(PRODUCT_OUT)/DOSP-$(EXTENDED_VERSION)-$(shell date -u +%Y%m%d-%H%M)-Changelog.txt
   $(if $(filter true,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_SUPPORTS_VBOOT)), \
     $(hide) $(MKBOOTIMG) $(INTERNAL_RECOVERYIMAGE_ARGS) $(INTERNAL_MKBOOTIMG_VERSION_ARGS) $(BOARD_MKBOOTIMG_ARGS) --output $(1).unsigned, \
     $(hide) $(MKBOOTIMG) $(INTERNAL_RECOVERYIMAGE_ARGS) $(INTERNAL_MKBOOTIMG_VERSION_ARGS) $(BOARD_MKBOOTIMG_ARGS) --output $(1) --id > $(RECOVERYIMAGE_ID_FILE))
@@ -2572,7 +2572,7 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) \
 	   $(if $(OEM_OTA_CONFIG), -o $(OEM_OTA_CONFIG)) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
 
-TARGET_PACKAGE := $(PRODUCT_OUT)/AospExtended-$(EXTENDED_VERSION)-$(TARGET_DEVICE)-$(shell date -u +%Y%m%d-%H%M)-$(EXTENDED_BUILD_TYPE).zip
+TARGET_PACKAGE := $(PRODUCT_OUT)/DOSP-$(EXTENDED_VERSION)-$(TARGET_DEVICE)-$(shell date -u +%Y%m%d-%H%M)-$(EXTENDED_BUILD_TYPE).zip
 
 .PHONY: otapackage bacon aex
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
@@ -2581,11 +2581,11 @@ aex: otapackage
 	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(TARGET_PACKAGE)
 	$(hide) $(MD5SUM) $(TARGET_PACKAGE) > $(TARGET_PACKAGE).md5sum
 	@echo -e ${CL_RST} ""
-	@echo -e ${CL_RST} " ▄▄▄·       .▄▄ ·  ▄▄▄·▄▄▄ .▐▄• ▄ ▄▄▄▄▄▄▄▄ . ▐ ▄ ·▄▄▄▄  ▄▄▄ .·▄▄▄▄  "
-	@echo -e ${CL_RST} "▐█ ▀█ ▪     ▐█ ▀. ▐█ ▄█▀▄.▀· █▌█▌▪•██  ▀▄.▀·•█▌▐███▪ ██ ▀▄.▀·██▪ ██ "
-	@echo -e ${CL_RST} "▄█▀▀█  ▄█▀▄ ▄▀▀▀█▄ ██▀·▐▀▀▪▄ ·██·  ▐█.▪▐▀▀▪▄▐█▐▐▌▐█· ▐█▌▐▀▀▪▄▐█· ▐█▌"
-	@echo -e ${CL_RST} "▐█ ▪▐▌▐█▌.▐▌▐█▄▪▐█▐█▪·•▐█▄▄▌▪▐█·█▌ ▐█▌·▐█▄▄▌██▐█▌██. ██ ▐█▄▄▌██. ██ "
-	@echo -e ${CL_RST} " ▀  ▀  ▀█▄▀▪ ▀▀▀▀ .▀    ▀▀▀ •▀▀ ▀▀ ▀▀▀  ▀▀▀ ▀▀ █▪▀▀▀▀▀•  ▀▀▀ ▀▀▀▀▀• "
+	@echo -e ${CL_RST} " ██ ██████         ██ ██       ██ ██ ██    ██ ████    "
+	@echo -e ${CL_RST} " ██       ██    ██       ██    ██          ██     ██ "
+	@echo -e ${CL_RST} " ██       ██    ██       ██    ██ ██ ██    ██ ████    "
+	@echo -e ${CL_RST} " ██       ██    ██       ██          ██    ██          "
+	@echo -e ${CL_RST} " ██ ██████         ██ ██       ██ ██ ██    ██    ── ── "
 	@echo -e ${CL_RST} "" ${CL_RST}
 	@echo -e ${CL_BLD}${CL_RED}"===============================-Package complete-==============================="${CL_RED}
 	@echo -e ${CL_BLD}${CL_YLW}"Zip: "${CL_YLW} $(TARGET_PACKAGE)${CL_RST}
@@ -2930,3 +2930,4 @@ include $(BUILD_SYSTEM)/product-graph.mk
 ifneq ($(sdk_repo_goal),)
 include $(TOPDIR)development/build/tools/sdk_repo.mk
 endif
+
